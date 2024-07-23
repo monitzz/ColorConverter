@@ -1,36 +1,103 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using System;
+using System.Text.RegularExpressions;
 
 namespace ColorConverter.Views;
 
 public partial class MainWindow : Window
 {
-    private const int MaxLength = 3;
+    private string[] rgbCode = Colors.Codes.RgbCode;
+    private string[] hexCode = Colors.Codes.HexCode;
 
     public MainWindow()
     {
         InitializeComponent();
+        AttachEventHandlers(this);
     }
 
-    private void OnTextInput(object? sender, TextInputEventArgs e)
+    private void AttachEventHandlers(ILogical parent)
     {
-        if (sender is TextBox textBox)
+        foreach (var child in parent.LogicalChildren)
         {
-            Box.Text = "haai";
-            if (!int.TryParse(e.Text, out _) || textBox.Text?.Length >= MaxLength)
+            if (child is TextBox textBox)
             {
-                e.Handled = true;
+                textBox.KeyUp += OnKeyUp;
+                textBox.GotFocus += OnGotFocus;
+            }
+            else if (child is ILogical logicalChild)
+            {
+                AttachEventHandlers(logicalChild);
             }
         }
     }
 
-    private void OnKeyDown(object? sender, KeyEventArgs e)
+    private void OnKeyUp(object? sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Back || e.Key == Key.Delete)
+        if (sender is TextBox textBox)
         {
-            e.Handled = false;
+            switch (textBox.Name)
+            {
+                case "RgbRedText":
+                case "RgbGreenText":
+                case "RgbBlueText":
+                    try
+                    {
+                        string[] rgb =
+                        [
+                            RgbRedText.Text!,
+                            RgbGreenText.Text!,
+                            RgbBlueText.Text!
+                        ];
+
+                        Colors.ConvertFrom.RgbToHex(rgb);
+                    }
+                    catch
+                    {
+                        textBox.Text = "0";
+                    }
+                    HexText.Text = String.Format(
+                        "{0}{1}{2}",
+                        hexCode[0],
+                        hexCode[1],
+                        hexCode[2]
+                    );
+                    break;
+                case "HexText":
+                    string pattern = @"[a-f0-9]";
+                    string text = textBox.Text!;
+
+                    if (text.Length == 6 && Regex.IsMatch(text, pattern))
+                    {
+
+                        string[] hex =
+                        [
+                            HexText.Text!.Substring(0, 2),
+                            HexText.Text!.Substring(2, 2),
+                            HexText.Text!.Substring(4, 2)
+                        ];
+
+                        Colors.ConvertFrom.HexToRgb(hex);
+                    }
+                    RgbRedText.Text = rgbCode[0];
+                    RgbGreenText.Text = rgbCode[1];
+                    RgbBlueText.Text = rgbCode[2];
+                    break;
+            }
+
+            if (textBox.Text == "0")
+            {
+                textBox.SelectAll();
+            }
+        }
+    }
+
+    private void OnGotFocus(object? sender, GotFocusEventArgs e)
+    {
+        if (sender is TextBox textBox && textBox.IsFocused == true)
+        {
+            textBox.SelectAll();
         }
     }
 }
