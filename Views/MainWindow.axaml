@@ -50,12 +50,6 @@
                 <TextBox Name="HexText" Text="{Binding HexadecimalText, Mode=TwoWay}" />
             </StackPanel>
         </Grid>
-        <Rectangle Height="50" Width="50" Margin="30, 0, 0, 0">
-            <Rectangle.Fill>
-                <MultiBinding StringFormat="{}#{0}">
-                    <Binding Path="HexadecimalBackground" />
-                </MultiBinding>
-            </Rectangle.Fill>
-        </Rectangle>
+        <Rectangle Name="ColorPreview" Height="50" Width="50" Margin="30, 0, 0, 0" />
     </StackPanel>
 </Window>
