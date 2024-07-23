@@ -76,8 +76,6 @@ public class MainWindowViewModel : ReactiveObject
             newText = newText.Substring(0, maxLength);
         }
 
-        Console.WriteLine(HexadecimalBackground);
-
         return newText;
     }
 }
