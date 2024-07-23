@@ -15,15 +15,47 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid HorizontalAlignment="Center"
-          ColumnDefinitions="60, 50, 50, 50"
-          RowDefinitions="Auto, Auto">
-        <Label Grid.Column="0" Grid.Row="0" Margin="5">RGB</Label>
-        <TextBox Grid.Column="1" Grid.Row="0" Margin="10 0"
-                 TextInput="OnTextInput" KeyDown="OnKeyDown" />
-        <TextBox Grid.Column="2" Grid.Row="0" Margin="10 0"
-                 TextInput="OnTextInput" KeyDown="OnKeyDown" />
-        <TextBox x:Name="Box" Grid.Column="3" Grid.Row="0" Margin="10 0"
-                 TextInput="OnTextInput" KeyDown="OnKeyDown" />
-    </Grid>
+    <StackPanel>
+        <Grid ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto"
+              HorizontalAlignment="Center">
+            <Grid.Styles>
+                <Style Selector="TextBox">
+                    <Setter Property="Margin" Value="10 0"/>
+                    <Setter Property="TextAlignment" Value="Center" />
+                </Style>
+                <Style Selector="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+                <Style Selector="StackPanel">
+                    <Setter Property="Margin" Value="24, 0, 0, 0" />
+                </Style>
+            </Grid.Styles>
+            <TextBlock Grid.Column="0" Grid.Row="0" Margin="0, 0, 5, 0" Text="RGB"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                <TextBox Name="RgbRedText"
+                         Text="{Binding RText, Mode=TwoWay}" />
+                <TextBox Name="RgbGreenText"
+                         Text="{Binding GText, Mode=TwoWay}" />
+                <TextBox Name="RgbBlueText"
+                         Text="{Binding BText, Mode=TwoWay}" />
+            </StackPanel>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Margin="0, 0, 5, 0" Text="Hex"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal"
+                        Margin="15, 0, 0, 0">
+                <TextBlock Text="#" />
+                <TextBox Name="HexText" Text="{Binding HexadecimalText, Mode=TwoWay}" />
+            </StackPanel>
+        </Grid>
+        <Rectangle Height="50" Width="50" Margin="30, 0, 0, 0">
+            <Rectangle.Fill>
+                <MultiBinding StringFormat="{}#{0}">
+                    <Binding Path="HexadecimalBackground" />
+                </MultiBinding>
+            </Rectangle.Fill>
+        </Rectangle>
+    </StackPanel>
 </Window>
