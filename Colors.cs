@@ -4,20 +4,45 @@ namespace ColorConverter;
 
 class Colors
 {
-    public static class Codes
+    public static class Arrays
     {
-        private static string[] _hexCode = new string[3];
-        public static string[] HexCode
+        private static string[] _hexArray = new string[3];
+        public static string[] HexArray
         {
-            get { return _hexCode; }
-            set { _hexCode = value; }
+            get { return _hexArray; }
+            set { _hexArray = value; }
         }
 
-        private static string[] _rgbCode = new string[3];
-        public static string[] RgbCode
+        private static string[] _rgbArray = new string[3];
+        public static string[] RgbArray
         {
-            get { return _rgbCode; }
-            set { _rgbCode = value; }
+            get { return _rgbArray; }
+            set { _rgbArray = value; }
+        }
+    }
+
+    public static class Codes
+    {
+        public static string HexCode
+        {
+            get => BuildColorResult(Arrays.HexArray, "#");
+        }
+
+        public static string RgbCode
+        {
+            get => BuildColorResult(Arrays.RgbArray);
+        }
+
+        private static string BuildColorResult(string[] colors, string initialValue = "")
+        {
+            string result = "";
+
+            foreach (string color in colors)
+            {
+                result += color;
+            }
+
+            return result;
         }
     }
 
@@ -25,7 +50,7 @@ class Colors
     {
         public static void RgbToHex(string[] rgb)
         {
-            string[] hexList = Codes.HexCode;
+            string[] hexList = Arrays.HexArray;
 
             for (int i = 0; i < rgb.Length; i++)
             {
@@ -53,7 +78,7 @@ class Colors
         
         public static void HexToRgb(string[] hex)
         {
-            string[] rgbList = Codes.RgbCode;
+            string[] rgbList = Arrays.RgbArray;
 
             for (sbyte i = 0; i < hex.Length; i++)
             {
