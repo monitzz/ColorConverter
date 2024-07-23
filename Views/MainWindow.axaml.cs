@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.LogicalTree;
 using System;
 using System.Text.RegularExpressions;
@@ -8,8 +9,8 @@ namespace ColorConverter.Views;
 
 public partial class MainWindow : Window
 {
-    private string[] rgbCode = Colors.Codes.RgbCode;
-    private string[] hexCode = Colors.Codes.HexCode;
+    private string[] rgbCode = Colors.Arrays.RgbArray;
+    private string[] hexCode = Colors.Arrays.HexArray;
 
     public MainWindow()
     {
@@ -90,6 +91,16 @@ public partial class MainWindow : Window
             {
                 textBox.SelectAll();
             }
+        }
+
+        try
+        {
+            string hexValue = "#" + Colors.Codes.HexCode;
+            ColorPreview.Fill = new SolidColorBrush(Color.Parse(hexValue));
+        }
+        catch (FormatException)
+        {
+            ColorPreview.Fill = new SolidColorBrush(Color.Parse("#000000"));
         }
     }
 
