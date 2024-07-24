@@ -42,13 +42,6 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _hexText, ValidateText(value, 6, false));
     }
 
-    private string _hexadecimalBackground = "000000";
-    public string HexadecimalBackground
-    {
-        get => "#" + HexadecimalText;
-        set => this.RaiseAndSetIfChanged(ref _hexadecimalBackground, ValidateText("#" + value, 6, false));
-    }
-
     private string ValidateText(string text, int maxLength = 3, bool isNumerical = true)
     {
         if (string.IsNullOrWhiteSpace(text))
