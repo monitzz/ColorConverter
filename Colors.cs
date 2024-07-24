@@ -35,7 +35,7 @@ class Colors
 
         private static string BuildColorResult(string[] colors, string initialValue = "")
         {
-            string result = "";
+            string result = initialValue;
 
             foreach (string color in colors)
             {
