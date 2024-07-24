@@ -24,7 +24,7 @@ public partial class MainWindow : Window
         {
             if (child is TextBox textBox)
             {
-                textBox.KeyUp += OnKeyUp;
+                textBox.TextChanged += OnTextChanged;
                 textBox.GotFocus += OnGotFocus;
             }
             else if (child is ILogical logicalChild)
@@ -34,10 +34,21 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnKeyUp(object? sender, KeyEventArgs e)
+    private void OnTextChanged(object? sender, TextChangedEventArgs e)
     {
         if (sender is TextBox textBox)
         {
+
+            try
+            {
+                string hexValue = Colors.Codes.HexCode;
+                ColorPreview.Fill = new SolidColorBrush(Color.Parse(hexValue));
+            }
+            catch (FormatException)
+            {
+                ColorPreview.Fill = new SolidColorBrush(Color.Parse("#000000"));
+            }
+
             switch (textBox.Name)
             {
                 case "RgbRedText":
@@ -91,16 +102,6 @@ public partial class MainWindow : Window
             {
                 textBox.SelectAll();
             }
-        }
-
-        try
-        {
-            string hexValue = "#" + Colors.Codes.HexCode;
-            ColorPreview.Fill = new SolidColorBrush(Color.Parse(hexValue));
-        }
-        catch (FormatException)
-        {
-            ColorPreview.Fill = new SolidColorBrush(Color.Parse("#000000"));
         }
     }
 
